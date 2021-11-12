@@ -74,16 +74,9 @@ impl Track {
     }
 
     pub fn length(&self) -> f64 {
-        let iter1 = self.points.iter();
-        let mut iter2 = self.points.iter();
-
-        if iter2.next().is_some() {
-            iter1
-                .zip(iter2)
-                .fold(0.0, |sum, (p1, p2)| sum + TrackPoint::distance(p1, p2))
-        } else {
-            0.0
-        }
+        self.points.iter()
+            .zip(self.points.iter().skip(1))
+            .fold(0.0, |sum, (p1, p2)| sum + TrackPoint::distance(p1, p2))
     }
 
     pub fn from_gpx_file(path: &str) -> Result<Track, Error> {
